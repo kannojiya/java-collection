@@ -1,0 +1,132 @@
+1.	What are Collection related features in Java 8?
+1.	The Collection InterfaceThis enables you to work with groups of objects.
+2.	The List Interface: This extends Collection and an instance of List stores an ordered collection of elements.
+3.	The Set:This extends Collection to handle sets, which must contain unique elements.
+4.	The SortedSet:This extends Set to handle sorted sets.
+5.	The Map:This maps unique keys to values.
+6.	The Map.Entry:This describes an element (a key/value pair) in a map. This is an inner class of Map.
+7.	The SortedMap:This extends Map so that the keys are maintained in an ascending order.
+8.	The Enumeration:This is legacy interface defines the methods by which you can enumerate (obtain one at a time) the elements in a collection of objects.
+2.	What is Java Collections Framework? List out some benefits of Collections framework?
+Reduced development effort by using core collection classes rather than           implementing our own collection classes.
+Code quality is enhanced with the use of well tested collections framework classes.
+Reduced effort for code maintenance by using collection classes shipped with JDK.
+Reusability and Interoperability
+3.	What is the benefit of Generics in Collections Framework?
+This avoids ClassCastException at Runtime because you will get the error at compilation. Also Generics make code clean since we don’t need to use casting and instancof operator. It also adds up to runtime benefit because the bytecode instructions that do type checking are not generated.
+4.	What are the basic interfaces of Java Collections Framework?
+Collection is the root of the collection hierarchy. A collection represents a group of objects known as its elements. The Java platform doesn’t provide any direct implementations of this interface.
+Set is a collection that cannot contain duplicate elements. This interface models the mathematical set abstraction and is used to represent sets, such as the deck of cards.
+List is an ordered collection and can contain duplicate elements. You can access any element from it’s index. List is more like array with dynamic length.
+ A Map is an object that maps keys to values. A map cannot contain duplicate   keys: Each key can map to at most one value
+5.	Why Collection doesn’t extend Cloneable and Serializable interfaces?
+The Collection implementations have a public clone method. However, it does’t really   make sense to include it in all implementations of Collection. This is because Collection is an abstract representation
+6.	Why Map interface doesn’t extend Collection interface?
+Because they are incompatible“. Collection has a method add(Object o). Map    can not have such method because it need key-value pair. 
+7.	What is an Iterator?
+We can use Iterator to traverse Set and List and also Map type of Objects. But List Iterator can be used to traverse for List type Objects, but not for Set type of Objects.
+8.	What is difference between Enumeration and Iterator interface?
+Iterators allow the caller to remove elements from the underlying collection during the iteration with its remove() method. You can not add/remove elements from a collection when using enumerator.
+Enumeration is available in legacy classes i.e Vector/Stack etc. whereas Iterator is available in all modern collection classes.
+
+9.	Why there is not method like Iterator.add() to add elements to the collection?
+The sole purpose of an Iterator is to enumerate through a collection. All collections contain the add() method to serve your purpose. There would be no point in adding to an Iterator because the collection may or may not be ordered. And add() method can not have same implementation for ordered and unordered collections.
+10.	Why Iterator don’t have a method to get next element directly without moving the cursor?
+Because object store in the memory has reference address and to get value of any object you need to provide information to java. getNext() could have written but according to java API cursor always point to middle and calling next() will move it to the current position
+11.	What is different between Iterator and ListIterator?
+  Iterator we can retrieve the elements from Collection Object in forward   direction only whereas List Iterator, which allows you to traverse in either  directions using hasPrevious() and previous() methods.
+ListIterator allows you modify the list using add() remove() methods. Using Iterator you can not add, only remove the elements.
+12.	What are different ways to iterate over a list?
+1.	Iterator loop
+2.	For loop
+3.	For loop (Adcance)
+4.	While loop
+13.	What do you understand by iterator fail-fast property?
+Fail-fast Iterators fail as soon as they realized that structure of Collection has been changed since iteration has begun. Structural changes means adding, removing or updating any element from collection while one thread is Iterating over that collection.
+Fail-fast behavior is implemented by keeping a modification count and if iteration thread realizes the change in modification count it throws ConcurrentModificationException.
+14.	What is difference between fail-fast and fail-safe?
+Fail-safe iterators are just opposite to fail-fast. They never fail if you modify the underlying collection on which they are iterating, because they work on clone of Collection instead of original collection and that’s why they are called as fail-safe iterator.
+15.	How to avoid ConcurrentModificationException while iterating a collection?
+You should first try to find another alternative iterator which are fail-safe. For example if you are using List and you can use ListIterator. If it is legacy collection, you can use enumeration.
+If above options are not possible then you can use one of three changes:
+If you are using JDK1.5 or higher then you can use ConcurrentHashMap and CopyOnWriteArrayList classes. It is the recommended approach.
+•	You can convert the list to an array and then iterate on the array.
+•	You can lock the list while iterating by putting it in a synchronized block.
+16.	Why there are no concrete implementations of Iterator interface?
+Iterator interface declare methods for iterating a collection but it’s implementation is responsibility of the Collection implementation classes. Every collection class that returns an iterator for traversing has it’s own Iterator implementation nested class.
+This allows collection classes to chose whether iterator is fail-fast or fail-safe. For example ArrayList iterator is fail-fast whereas CopyOnWriteArrayList iterator is fail-safe. 
+17.	What is UnsupportedOperationException?
+The exception used to indicate that the operation is not supported. It’s used extensively in JDK classes, in collections framework throws this exception for all and operations.
+18.	How HashMap works in Java?
+HashMap except that it uses reference equality when comparing elements. IdentityHashMap class is not a widely used Map implementation. While this class implements the Map interface, it intentionally violates Map’s general contract, which mandates the use of the equals() method when comparing objects. IdentityHashMap is designed for use only in the rare cases wherein reference-equality semantics are required.
+19.	What is the importance of hashCode() and equals() methods?
+HashMap uses Key object hashCode() and equals() method to determine the index to put the key-value pair. These methods are also used when we try to get value from HashMap. If these methods are not implemented correctly, 
+20.	Can we use any class as Map key?
+Yes we can use class as key .
+
+21.	What are different Collection views provided by Map interfasce?
+Set keySet(): , Collection values():Set<Map.Entry<K, V>> entrySet():
+22.	What is difference between HashMap and Hashtable?
+HashMap allows null key and values whereas Hashtable doesn’t allow null key and values.
+Hashtable is synchronized but HashMap is not synchronized. So HashMap is better for single threaded environment, Hashtable is suitable for multi-threaded environment.
+LinkedHashMap was introduced in Java 1.4 as a subclass of HashMap, so incase you want iteration order, you can easily switch from HashMap to LinkedHashMap but that is not the case with Hashtable whose iteration order is unpredictable.
+HashMap provides Set of keys to iterate and hence it’s fail-fast but Hashtable provides Enumeration of keys that doesn’t support this feature.
+Hashtable is considered to be legacy class and if you are looking for modifications of Map while iterating, you should use ConcurrentHashMap.
+23.	How to decide between HashMap and TreeMap?
+For inserting, deleting, and locating elements in a Map, the HashMap offers the best alternative. If, however, you need to traverse the keys in a sorted order, then TreeMap is your better alternative. Depending upon the size of your collection, it may be faster to add elements to a HashMap, then convert the map to a TreeMap for sorted key traversal.
+24.	What are similarities and difference between ArrayList and Vector?
+Vector is synchronized whereas ArrayList is not synchronized. However if you are looking for modification of list while iterating, you should use CopyOnWriteArrayList.
+ArrayList is faster than Vector because it doesn’t have any overhead because of synchronization.
+25.	What is difference between Array and ArrayList? When will you use Array over ArrayList?
+Arrays can contain primitive or Objects whereas ArrayList can contain only Objects.
+Arrays are fixed size whereas ArrayList size is dynamic.
+Arrays doesn’t provide a lot of features like ArrayList, such as addAll, removeAll, iterator etc.
+Although ArrayList is the obvious choice when we work on list, there are few times when array are good to use.
+•	If the size of list is fixed and mostly used to store and traverse them.
+•	For list of primitive data types, although Collections use autoboxing to reduce the coding effort but still it makes them slow when working on fixed size primitive data types.
+•	If you are working on fixed multi-dimensional situation, using [][] is far more easier than List<List<>>
+
+26.	What is difference between ArrayList and LinkedList?
+ArrayList is an index based data structure backed by Array, so it provides random access to it’s elements with performance as O(1) but LinkedList stores data as list of nodes where every node is linked to it’s previous and next node. So even though there is a method to get the element using index, internally it traverse from start to reach at the index node and then return the element, so performance is O(n) that is slower than ArrayList.
+Insertion, addition or removal of an element is faster in LinkedList compared to ArrayList because there is no concept of resizing array or updating index when element is added in middle.
+
+27.	Which collection classes provide random access of it’s elements?
+ArrayList, HashMap, TreeMap, Hashtable classes provide random access to it’s elements.
+28.	What is EnumSet?
+java.util.EnumSet is Set implementation to use with enum types. All of the elements in an enum set must come from a single enum type that is specified, explicitly or implicitly, when the set is created. EnumSet is not synchronized and null elements are not allowed. It also provides some useful methods like copyOf(Collection c), of(E first, E… rest) and complementOf(EnumSet s).
+29.	Which collection classes are thread-safe?
+Vector, Hashtable, Properties and Stack are synchronized classes, so they are thread-safe and can be used in multi-threaded environment. Java 1.5 Concurrent API included some collection classes that allows modification of collection while iteration because they work on the clone of the collection, so they are safe to use in multi-threaded environment.
+
+30.	What are concurrent Collection Classes?
+Java 1.5 Concurrent package (java.util.concurrent) contains thread-safe collection classes that allow collections to be modified while iterating. By design Iterator implementation in java.utilpackages are fail-fast and throws ConcurrentModificationException. But Iterator implementation in java.util.concurrent packages are fail-safe and we can modify the collection while iterating.
+31.	What is BlockingQueue?
+32.	BlockingQueue interface is part of java collections framework and it’s primarily used for implementing producer consumer problem. We don’t need to worry about waiting for the space to be available for producer or object to be available for consumer in BlockingQueue as it’s handled by implementation classes of BlockingQueue.
+33.	What is Queue and Stack, list their differences?
+ Queue and Stack are used to store data before processinthem. java.util.Queue is  an interface whose implementation classes are present in java concurrent package.  Queue allows retrieval of element in First-In-First-Out (FIFO) order but it’s not always the case. There is also Deque interface that allows elements to be retrieved from both end of the queue.
+34.	What is Collections Class?
+java.util.Collections is a utility class consists exclusively of static methods that operate on or return collections. It contains polymorphic algorithms that operate on collections, “wrappers”, which return a new collection backed by a specified collection, and a few other odds and ends.
+35.	What is Comparable and Comparator interface?
+Java provides Comparable interface which should be implemented by any custom class if we want to use Arrays or Collections sorting methods. Comparable interface has compareTo(T obj) method which is used by sorting methods. We should override this method in such a way that it returns a negative integer, zero, or a positive integer if “this” object is less than, equal to, or greater than the object passed as argument
+36.	How can we sort a list of Objects?
+Comparable interface is used to provide the natural sorting of objects and we can use it to provide sorting based on single logic.
+Comparator interface is used to provide different algorithms for sorting and we can chose the comparator we want to use to sort the given collection of objects.
+37.	While passing a Collection as argument to a function, how can we make sure the function will not be able to modify it?
+We can create a read-only collection using Collections.unmodifiableCollection(Collection c)method before passing it as argument, this will make sure that any operation to change the collection will throw UnsupportedOperationException.
+38.	How can we create a synchronized collection from given collection?
+We can use Collections.synchronizedCollection(Collection c) to get a synchronized (thread-safe) collection backed by the specified collection
+39.	What are common algorithms implemented in Collections Framework?
+Java Collections Framework provides algorithm implementations that are commonly used such as sorting and searching. Collections class contain these method implementations. Most of these algorithms work on List but some of them are applicable for all kinds of collections.
+Some of them are sorting, searching, shuffling, min-max values
+40.	What is Big-O notation? Give some examples?
+The Big-O notation describes the performance of an algorithm in terms of number of elements in a data structure. Since Collection classes are actually data structures, we usually tend to use Big-O notation to chose the collection implementation to use based on time, memory and performance.
+41.	What are best practices related to Java Collections Framework?
+Some collection classes allows to specify the initial capacity, so if we have an estimate of number of elements we will store, we can use it to avoid rehashing or resizing.
+Write program in terms of interfaces not implementations, it allows us to change the implementation easily at later point of time
+
+42.	What is Java Priority Queue?
+PriorityQueue is an unbounded queue based on a priority heap and the elements are ordered in their natural order or we can provide Comparator for ordering at the time of creation. PriorityQueue doesn’t allow null values and we can’t add any object that doesn’t provide natural ordering or we don’t have any comparator for them for ordering.
+43.	Why can’t we write code as List<Number> numbers = new ArrayList<Integer>();?
+Generics doesn’t support sub-typing because it will cause issues in achieving type safety. That’s why List<T> is not considered as a subtype of List<S> where S is the super-type of T. 
+
+44.	Why can’t we create generic array? or write code as List<Integer>[] array = new ArrayList<Integer>[10];
+We are not allowed to create generic arrays because array carry type information of it’s elements at runtime. This information is used at runtime to throw ArrayStoreException if elements type doesn’t match to the defined type. Since generics type information gets erased at runtime by Type Erasure,
